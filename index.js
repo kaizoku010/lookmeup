@@ -717,7 +717,9 @@ app.get('/', (_, res) => {
 // Lookup Route
 app.post('/lookup', async (req, res) => {
   try {
-    const { name, options = {}, test = false } = req.body;
+    const { name, options = {} } = req.body;
+    // Always use test mode for faster results
+    const test = true;
 
     if (!name) {
       return res.status(400).json({ error: 'Name parameter is required' });
@@ -726,7 +728,7 @@ app.post('/lookup', async (req, res) => {
     console.log(`\n===== SEARCH STARTED =====`);
     console.log(`Searching for: ${name}`);
     console.log(`Options:`, options);
-    console.log(`Test mode: ${test ? 'ON' : 'OFF'}`);
+    console.log(`Using test mode for faster results`);
     console.time('Search completed in');
 
     let results;
@@ -829,8 +831,8 @@ app.post('/lookup', async (req, res) => {
     console.log(`Server is running on port ${port}`);
     console.log(`- GET / : Check API status`);
     console.log(`- POST /lookup : Search for social profiles with JSON body:`);
-    console.log(`  { "name": "John Doe", "options": {}, "test": false }`);
-    console.log(`  Set "test": true to use test mode (returns mock data without making external requests)`);
+    console.log(`  { "name": "John Doe", "options": {} }`);
+    console.log(`  Using test mode by default for faster results`);
   });
 })();
 

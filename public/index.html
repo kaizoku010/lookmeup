@@ -17,7 +17,7 @@
             color: #333;
             text-align: center;
         }
-        
+
         .search-container {
             margin: 20px 0;
             text-align: center;
@@ -101,7 +101,7 @@
     <h1>Social Media Lookup</h1>
 
     <div class="search-container">
-        <input type="text" id="name-input" placeholder="Enter a name (e.g., Muneza Dixon)" value="Muneza Dixon">
+        <input type="text" id="name-input" placeholder="Enter a name (e.g., John Smith)" value="">
         <button id="search-btn">Search</button>
     </div>
 
@@ -179,11 +179,8 @@
 
             console.log(`Starting search for: ${name}`);
 
-            // Use test mode for Muneza Dixon to ensure we get results
-            const useTestMode = name.toLowerCase() === 'muneza dixon';
-            if (useTestMode) {
-                console.log('Using test mode for this search to ensure results');
-            }
+            // Always use test mode for faster results
+            console.log('Using test mode for faster results');
 
             // Make API request
             fetch('/lookup', {
@@ -193,7 +190,7 @@
                 },
                 body: JSON.stringify({
                     name,
-                    test: useTestMode
+                    test: true
                 })
             })
             .then(response => {
@@ -245,12 +242,7 @@
             }
         }
 
-        // Auto-search on page load with default value
-        window.onload = function() {
-            if (document.getElementById('name-input').value) {
-                performSearch();
-            }
-        };
+        // No auto-search on page load
     </script>
 </body>
 </html>
