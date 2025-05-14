@@ -9,6 +9,10 @@ import * as cheerio from 'cheerio';
 import express from "express";
 import path from "path";
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Enable stealth mode to avoid bot detection
 puppeteer.use(StealthPlugin());
@@ -37,8 +41,8 @@ const proxies = {
   ],
 };
 
-// Proxy selection strategy
-const PROXY_STRATEGY = 'free'; // 'free' | 'premium'
+// Proxy selection strategy from environment variables or default to 'free'
+const PROXY_STRATEGY = process.env.PROXY_STRATEGY || 'free'; // 'free' | 'premium'
 let currentProxyIndex = 0;
 
 const getProxy = () => {
@@ -68,9 +72,9 @@ const getPuppeteerProxyArgs = () => {
   }
 };
 
-// CAPTCHA solver configuration
-const CAPTCHA_API_KEY = process.env.CAPTCHA_API_KEY || '207d3591031c87cee188fab9a44e7481';
-console.log('Using CAPTCHA API key:', CAPTCHA_API_KEY);
+// CAPTCHA solver configuration from environment variables
+const CAPTCHA_API_KEY = process.env.CAPTCHA_API_KEY;
+console.log('Using CAPTCHA API key:', CAPTCHA_API_KEY ? CAPTCHA_API_KEY.substring(0, 5) + '...' : 'Not configured');
 
 /**
  * Main lookup function with enhanced capabilities
@@ -698,7 +702,8 @@ async function reverseImageSearch(imageUrl) {
     await browser.close();
   }
 }
-const port = 5000;
+// Get port from environment variables or default to 5000
+const port = process.env.PORT || 5000;
 
 // Add middleware
 app.use(express.json());
@@ -734,7 +739,6 @@ app.post('/lookup', async (req, res) => {
       const nameParts = name.split(' ');
       const firstName = nameParts[0].toLowerCase();
       const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1].toLowerCase() : '';
-      const fullNameLower = name.toLowerCase();
 
       // Generate variations of usernames that are commonly used
       const variations = {
